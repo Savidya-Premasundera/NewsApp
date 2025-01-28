@@ -1,0 +1,12 @@
+# Bytecode
+*.class
+
+# Maven build files
+/NewsApp/target/
+
+# Mac OS X .DS_Store files
+.DS_Store
+
+# Preferences of user
+/NewsApp/userData.json
+/NewsApp/nbproject/

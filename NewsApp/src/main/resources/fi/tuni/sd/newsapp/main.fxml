@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.stage.Screen?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.*?>
+<?import javafx.collections.FXCollections?>
+<?import fi.tuni.sd.newsapp.enums.ArticleCategoryEnum?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.Priority?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="${screen.visualBounds.width}" 
+            prefHeight="${screen.visualBounds.height}"
+            style="-fx-background-color: #F0F0F0;"
+            fx:controller="fi.tuni.sd.newsapp.view.MainView">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
+    
+    <center>
+        <StackPane>
+            <GridPane prefWidth="${screen.visualBounds.width}" prefHeight="${screen.visualBounds.height}" BorderPane.alignment="CENTER" 
+                      style="-fx-background-color: #E0E0E0;">
+                <padding>
+                    <Insets top="23" right="0" bottom="0" left="0"/>
+                </padding>  
+                
+                <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="10" HBox.hgrow="ALWAYS" alignment="CENTER" prefWidth="${screen.visualBounds.width}" style="-fx-padding: 0 50 0 60;">
+                    <ImageView fitWidth="65" fitHeight="65" preserveRatio="true" > 
+                        <Image url="/assets/news_app_logo.png" />
+                    </ImageView>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="countrySearchBox" onKeyReleased="#onSearch" minWidth="200" /> 
+                    <ComboBox fx:id="categoryDropdown" maxWidth="150"/>
+                    <ComboBox fx:id="languageDropdown" maxWidth="150"/>
+                    <Label text="From"/>
+                    <DatePicker fx:id="calendarDateFrom"/>
+                    <Label text="To"/>
+                    <DatePicker fx:id="calendarDateTo"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="exitBtn" text="Exit" style="-fx-text-fill: #333333;" onAction="#onExit"/>
+                </HBox>        
+
+                <Region GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <minHeight>
+                        <Double fx:value="20"/>
+                    </minHeight>
+                </Region>
+       
+                <SplitPane fx:id="mainSplitPane" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2" GridPane.rowSpan="6"
+                           prefWidth="${screen.visualBounds.width}" prefHeight="${screen.visualBounds.height}" dividerPositions="0.3">
+                    <items>
+                        <!-- Left Section: Country Information -->
+                        <VBox style="-fx-background-color: #FFFFFF;">
+                            <VBox fx:id="countryInfo"></VBox>
+                           
+                            <WebView fx:id="mapView" >
+                                <VBox.vgrow>
+                                    <Priority fx:constant="ALWAYS"/>                                   
+                                </VBox.vgrow>                                
+                            </WebView>
+                        </VBox>
+               
+                        <!-- Right Section: NewsList -->
+                        <VBox style="-fx-background-color: #F8F8F8;">
+                            <VBox fx:id="newsList" style="-fx-background-color: #F8F8F8;">
+                                <Label style="-fx-text-fill: #333333;"/>
+                            </VBox>
+                        </VBox>
+                    </items>
+                </SplitPane>
+            </GridPane>
+            
+            <ListView fx:id="filteredCountries" style="-fx-background-color: #FFFFFF;" onMouseClicked="#selectCountry" 
+                      maxHeight="200" maxWidth="200" visible="false" StackPane.alignment="TOP_LEFT"/>
+             
+            <ProgressIndicator fx:id="loadingIndicator" visible="false" 
+                               prefWidth="100" prefHeight="100" 
+                               StackPane.alignment="CENTER"  />
+        </StackPane>
+    </center>
+</BorderPane>
