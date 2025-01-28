@@ -18,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -28,7 +27,7 @@ import javafx.stage.Stage;
  * capital, region, languages, population, area, and flag. It also provides
  * functionality to embed a map view showing the country's geographical
  * coordinates and an option to view the location on Google Maps.
-
+ *
  * @author Savidya
  */
 public class CountryView {
@@ -45,27 +44,12 @@ public class CountryView {
     }
 
     /**
-     * Creates UI component that displays information about a country.
+     * Creates the complete country component view.
      *
-     * @return VBox containing the country information card.
+     * @return A VBox containing the country details.
      */
     public VBox createCountryComponent() {
-        var flagImage = new Image(country.getFlags().getPng());
-        var flagView = new ImageView(flagImage);
-        flagView.setFitHeight(100);
-        flagView.setPreserveRatio(true);
-
-        var flagContainer = new HBox(flagView);
-        flagContainer.setStyle("-fx-alignment: center;");
-
-        var countryNameLabel = createLabel("Country ", country.getName().getOfficial());
-        var capitalLabel = createLabel("Capital ", String.join(", ", country.getCapital()));
-        var regionLabel = createLabel("Region ", country.getRegion());
-        var languagesLabel = createLabel("Languages ", String.join(", ", country.getLanguages().values()));
-        var populationLabel = createLabel("Population ", String.format(Locale.FRANCE, "%,.0f", country.getPopulation()));
-        var areaLabel = createLabel("Area ", String.format(Locale.FRANCE, "%,.0f", country.getArea()) + " km\u00B2");
-
-        var countryInfoCard = new VBox(20);
+        VBox countryInfoCard = new VBox(20);
         countryInfoCard.setPadding(new Insets(20));
         countryInfoCard.setStyle("-fx-background-color: #FFFFFF; "
                 + "-fx-background-radius: 15; "
@@ -73,16 +57,14 @@ public class CountryView {
                 + "-fx-border-color: #DDDDDD; "
                 + "-fx-border-width: 1; "
                 + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 2);");
-        var shadow = new DropShadow(5, Color.GRAY);
-        countryInfoCard.setEffect(shadow);
 
-        var allInfo = new VBox(20);
-        allInfo.setStyle("-fx-alignment: center;");
-        allInfo.getChildren().addAll(flagView, countryNameLabel, capitalLabel, regionLabel, languagesLabel, populationLabel, areaLabel);
+        countryInfoCard.setEffect(new DropShadow(5, Color.GRAY));
 
-        countryInfoCard.getChildren().add(allInfo);
+        VBox contentBox = buildCountryDetails();
 
-        var outerContainer = new VBox();
+        countryInfoCard.getChildren().add(contentBox);
+
+        VBox outerContainer = new VBox();
         outerContainer.setPadding(new Insets(20));
         outerContainer.getChildren().add(countryInfoCard);
 
@@ -90,31 +72,76 @@ public class CountryView {
     }
 
     /**
-     * Helper method to create a labels.
+     * Builds the main content containing country details and flag.
      *
-     * @param labelText the text to display as the label.
-     * @param valueText the value of the attribute to display.
-     * @return a `TextFlow` containing the label and value.
+     * @return A VBox with all country details.
      */
-    private TextFlow createLabel(String labelText, String valueText) {
-        var label = new Label(labelText);
+    private VBox buildCountryDetails() {
+        VBox contentBox = new VBox(20);
+        contentBox.setStyle("-fx-alignment: center;");
+
+        ImageView flagView = createFlagView();
+        contentBox.getChildren().add(flagView);
+
+        contentBox.getChildren().addAll(
+                createLabeledDetail("Country", country.getName().getOfficial()),
+                createLabeledDetail("Capital", String.join(", ", country.getCapital())),
+                createLabeledDetail("Region", country.getRegion()),
+                createLabeledDetail("Languages", String.join(", ", country.getLanguages().values())),
+                createLabeledDetail("Population", formatNumber(country.getPopulation())),
+                createLabeledDetail("Area", formatNumber(country.getArea()) + " km²")
+        );
+
+        return contentBox;
+    }
+
+    /**
+     * Creates the flag image view for the country.
+     *
+     * @return An ImageView with the flag image.
+     */
+    private ImageView createFlagView() {
+        Image flagImage = new Image(country.getFlags().getPng());
+        ImageView flagView = new ImageView(flagImage);
+        flagView.setFitHeight(100);
+        flagView.setPreserveRatio(true);
+        return flagView;
+    }
+
+    /**
+     * Creates a formatted detail section with a label and value.
+     *
+     * @param labelText The label text.
+     * @param valueText The value text.
+     * @return A TextFlow containing the label and value.
+     */
+    private HBox createLabeledDetail(String labelText, String valueText) {
+        Label label = new Label(labelText);
         label.setFont(Font.font("Arial", 14));
         label.setTextFill(Color.GRAY);
         label.setMinWidth(100);
 
-        var value = new Text(valueText);
+        Text value = new Text(valueText);
         value.setFont(Font.font("Arial", 15));
         value.setFill(Color.BLACK);
         value.setWrappingWidth(250);
 
-        var labelContainer = new HBox(10);
-        labelContainer.setStyle("-fx-alignment: center-left;");
-        labelContainer.getChildren().addAll(label, value);
+        HBox detailContainer = new HBox(10);
+        detailContainer.setStyle("-fx-alignment: center-left;");
+        detailContainer.getChildren().addAll(label, value);
 
-        var textFlowContainer = new VBox(labelContainer);
-        textFlowContainer.setPrefWidth(250);
+        return detailContainer;
 
-        return new TextFlow(labelContainer);
+    }
+
+    /**
+     * Formats a number with commas for better readability.
+     *
+     * @param number The number to format.
+     * @return A formatted string with commas.
+     */
+    private String formatNumber(double number) {
+        return String.format(Locale.FRANCE, "%,.0f", number);
     }
 
     /**
