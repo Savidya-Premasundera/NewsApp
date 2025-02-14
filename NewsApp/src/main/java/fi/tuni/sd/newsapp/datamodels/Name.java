@@ -30,17 +30,6 @@ public class Name {
     private String official;
 
     /**
-     * Constructs a new {@code Name} with the provided common and official names.
-     *
-     * @param common the common name of the entity
-     * @param official the official name of the entity
-     */
-    public Name(String common, String official) {
-        this.common = common;
-        this.official = official;
-    }
-
-    /**
      * Retrieves the common name.
      *
      * @return the common name as a {@code String}

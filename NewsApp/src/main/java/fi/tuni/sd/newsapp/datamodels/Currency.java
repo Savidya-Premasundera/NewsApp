@@ -13,18 +13,7 @@ public class Currency {
 
     private String name;
     private String symbol;
-
-    /**
-     * Constructor for Currency
-     *
-     * @param name The name of the currency
-     * @param symbol The symbol of the currency
-     */
-    public Currency(String name, String symbol) {
-        this.name = name;
-        this.symbol = symbol;
-    }
-
+    
     /**
      * Retrieves the name.
      *

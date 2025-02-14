@@ -26,40 +26,6 @@ public class Country {
     private double area;
 
     /**
-     * Constructs a new {@code Country} with the specified attributes.
-     *
-     * @param flags The flags associated with the country, represented as a
-     * {@link Flag} object.
-     * @param name The name of the country, represented as a {@link Name}
-     * object.
-     * @param cca2 The ISO 3166-1 alpha-2 code of the country.
-     * @param latlng The geographical coordinates of the country (latitude and
-     * longitude) as a list of doubles.
-     * @param capital A list of the capital cities of the country.
-     * @param region The region to which the country belongs.
-     * @param currencies A map of the country's currencies, where the key is the
-     * currency code, and the value is a {@link Currency} object.
-     * @param languages A map of the languages spoken in the country, where the
-     * key is the language code, and the value is the language name.
-     * @param population The total population of the country.
-     * @param area The total area of the country.
-     */
-    public Country(Flag flags, Name name, String cca2, List<Double> latlng, List<String> capital, String region,
-            Map<String, Currency> currencies, Map<String, String> languages, double population,
-            double area) {
-        this.flags = flags;
-        this.name = name;
-        this.cca2 = cca2;
-        this.latlng = latlng;
-        this.capital = capital;
-        this.region = region;
-        this.currencies = currencies;
-        this.languages = languages;
-        this.population = population;
-        this.area = area;
-    }
-
-    /**
      * Gets the flags of the country.
      *
      * @return The flags

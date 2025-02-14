@@ -35,19 +35,6 @@ public class Flag {
     private String alt;
 
     /**
-     * Constructor for the {@code Flag} class.
-     *
-     * @param png The path or URL to the PNG image of the flag
-     * @param svg The path or URL to the SVG image of the flag
-     * @param alt The alternative text description for accessibility
-     */
-    public Flag(String png, String svg, String alt) {
-        this.png = png;
-        this.svg = svg;
-        this.alt = alt;
-    }
-
-    /**
      * Retrieves the PNG image file path or URL.
      *
      * @return the PNG image as a {@code String}
